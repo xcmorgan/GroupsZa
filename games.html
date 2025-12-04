@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Games - GroupsZA</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #121213 0%, #1a1a2e 50%, #16213e 100%);
+      color: #eee;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    header { text-align: center; padding: 2rem 0; }
+    .site-title {
+      font-size: 3rem; font-weight: 900;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #667eea);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #25d366; color: white; padding: 0.8rem 1.5rem;
+      border-radius: 25px; text-decoration: none; font-weight: 600;
+      margin-bottom: 1rem; box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: #1dad53; transform: translateY(-2px); }
+
+    .hero {
+      text-align: center; margin: 2rem 0 4rem; padding: 2rem;
+      background: rgba(255,255,255,0.05); border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .hero h1 {
+      font-size: 2.5rem; margin-bottom: 1rem;
+      background: linear-gradient(45deg, #fff, #ddd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .games-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem; margin-bottom: 3rem;
+    }
+    .game-card {
+      background: rgba(34,34,34,0.9); border-radius: 20px; padding: 2rem;
+      text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .game-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(255,107,53,0.3); }
+    .game-icon {
+      font-size: 4rem; margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255,107,53,0.5));
+    }
+    .game-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
+    .play-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2); color: white;
+      padding: 1rem 2.5rem; border: none; border-radius: 30px; font-size: 1.1rem;
+      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center;
+      gap: 0.8rem; box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+      transition: all 0.3s ease; margin-top: 1rem;
+    }
+    .play-btn:hover { background: linear-gradient(45deg, #5a6fd8, #6a4190); transform: translateY(-3px); }
+
+    /* Game Modal */
+    .game-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center;
+      padding: 10px;
+    }
+    .game-container {
+      background: #222; border-radius: 20px; padding: 2rem; max-width: 600px;
+      max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px #ff6b35;
+    }
+    .close-game {
+      position: absolute; top: 1rem; right: 1.5rem; background: #ff4444; color: white;
+      border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Hangman Styles */
+    .hangman-container { text-align: center; }
+    .hangman-word { font-size: 2.5rem; letter-spacing: 0.5rem; margin: 1rem 0; font-weight: bold; }
+    .hangman-lives { font-size: 1.5rem; color: #ff6b35; margin: 1rem 0; }
+    .hangman-drawing { font-size: 3rem; margin: 1rem 0; line-height: 1; }
+    .hangman-status { 
+      font-size: 1.8rem; font-weight: bold; margin: 1rem 0; min-height: 2.5rem;
+      padding: 1rem; border-radius: 10px; background: rgba(255,255,255,0.1);
+    }
+    .hangman-keyboard {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; max-width: 500px;
+      margin: 2rem auto;
+    }
+    .hangman-key { 
+      padding: 1rem; font-size: 1.2rem; border: none; border-radius: 8px; 
+      background: #444; color: white; cursor: pointer; transition: all 0.3s ease;
+    }
+    .hangman-key.used { background: #666; cursor: not-allowed; }
+    .hangman-key.wrong { background: #ff4444; animation: shake 0.5s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+    /* Unscramble Styles */
+    .unscramble-word { font-size: 2.5rem; margin: 1rem 0; min-height: 3.5rem; }
+    .unscramble-letters {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 2rem 0;
+      min-height: 4rem;
+    }
+    .unscramble-letter { 
+      width: 60px; height: 60px; font-size: 1.8rem; font-weight: bold; border: none;
+      border-radius: 10px; background: #444; color: white; cursor: pointer; user-select: none;
+      transition: all 0.3s ease;
+    }
+    .unscramble-letter:hover { background: #555; transform: scale(1.1); }
+    .unscramble-input { font-size: 1.5rem; padding: 1rem; border-radius: 10px; border: none; margin: 1rem; width: 70%; }
+    .high-score { font-size: 1.2rem; color: #25d366; font-weight: bold; }
+
+    /* Real Life Quiz Styles */
+    .quiz-container { text-align: center; }
+    .quiz-question { font-size: 1.6rem; margin: 1.5rem 0; font-weight: bold; line-height: 1.4; }
+    .quiz-options { display: grid; gap: 1rem; margin: 2rem 0; }
+    .quiz-option {
+      padding: 1.2rem; font-size: 1.1rem; border: none; border-radius: 12px;
+      background: #444; color: white; cursor: pointer; transition: all 0.3s ease;
+      font-weight: 600; text-align: left;
+    }
+    .quiz-option:hover:not(.disabled) { background: #555; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,53,0.3); }
+    .quiz-option.correct { background: linear-gradient(45deg, #25d366, #20b55a); animation: pulse 0.6s; }
+    .quiz-option.wrong { background: linear-gradient(45deg, #ff4444, #cc3333); animation: shake 0.5s; }
+    .quiz-option.disabled { opacity: 0.6; cursor: not-allowed; }
+    .quiz-score { font-size: 1.5rem; color: #25d366; margin: 1rem 0; font-weight: bold; }
+    .quiz-progress { background: #333; height: 10px; border-radius: 5px; margin: 1rem 0; overflow: hidden; }
+    .quiz-progress-bar { height: 100%; background: linear-gradient(90deg, #ff6b35, #f7931e); transition: width 0.5s ease; border-radius: 5px; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+    @media (max-width: 768px) {
+      .site-title { font-size: 2.2rem; }
+      .games-grid { grid-template-columns: 1fr; }
+      .game-icon { font-size: 3rem; }
+      .hangman-keyboard { grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
+      .hangman-key { padding: 0.8rem; font-size: 1rem; }
+      .unscramble-input { width: 90%; }
+      .quiz-options { grid-template-columns: 1fr; }
+      .quiz-question { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to GroupsZA</a>
+      <h1 class="site-title">🎮 Games</h1>
+    </header>
+
+    <section class="hero">
+      <h1>Play Solo - No Internet Needed!</h1>
+      <p>Classic single-player games that work completely offline</p>
+    </section>
+
+    <section class="games-grid">
+      <!-- Hangman -->
+      <article class="game-card" data-game="hangman">
+        <div class="game-icon"><i class="fas fa-font"></i></div>
+        <h3>Hangman</h3>
+        <p>Guess the word before the man hangs! 6 wrong guesses.</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Word Unscramble -->
+      <article class="game-card" data-game="unscramble">
+        <div class="game-icon"><i class="fas fa-puzzle-piece"></i></div>
+        <h3>Word Unscramble</h3>
+        <p>Rearrange letters to form words! Beat your high score.</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Tic Tac Toe -->
+      <article class="game-card" data-game="tictactoe">
+        <div class="game-icon"><i class="fas fa-th"></i></div>
+        <h3>Tic Tac Toe</h3>
+        <p>Never lose to unbeatable AI - perfect challenge!</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Real Life Quiz -->
+      <article class="game-card" data-game="reallife">
+        <div class="game-icon"><i class="fas fa-heart-broken"></i></div>
+        <h3>Real Life Drama</h3>
+        <p>Cheating, heartbreak, revenge - shit everyone deals with</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+    </section>
+  </div>
+
+  <!-- Hangman Modal -->
+  <div id="hangman" class="game-modal">
+    <div class="game-container hangman-container">
+      <button class="close-game" onclick="GameManager.hide('hangman')">&times;</button>
+      <h2>🔤 Hangman</h2>
+      <div class="hangman-drawing" id="hangman-drawing">🏃</div>
+      <div class="hangman-word" id="hangman-word"></div>
+      <div class="hangman-lives" id="hangman-lives">Lives: 6</div>
+      <div class="hangman-status" id="hangman-status"></div>
+      <div class="hangman-keyboard" id="hangman-keyboard"></div>
+      <button onclick="GameManager.hangman.newGame()" class="play-btn" style="margin-top: 1rem;">New Game</button>
+    </div>
+  </div>
+
+  <!-- Unscramble Modal -->
+  <div id="unscramble" class="game-modal">
+    <div class="game-container">
+      <button class="close-game" onclick="GameManager.hide('unscramble')">&times;</button>
+      <h2>🧩 Word Unscramble</h2>
+      <div class="high-score" id="high-score">High Score: 0</div>
+      <div class="unscramble-word" id="unscramble-word"></div>
+      <div class="unscramble-letters" id="unscramble-letters"></div>
+      <input type="text" id="unscramble-input" class="unscramble-input" placeholder="Type your answer..." maxlength="20">
+      <div style="margin-top: 1rem;">
+        <button onclick="GameManager.unscramble.checkAnswer()" class="play-btn">Check Answer</button>
+        <button onclick="GameManager.unscramble.nextWord()" class="play-btn" style="background: #f7931e;">Next Word</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tic Tac Toe Modal -->
+  <div id="tictactoe" class="game-modal">
+    <div class="game-container">
+      <button class="close-game" onclick="GameManager.hide('tictactoe')">&times;</button>
+      <h2>❌⭕ Tic Tac Toe</h2>
+      <div id="ttt-board"></div>
+      <div id="ttt-status"></div>
+      <button onclick="GameManager.tictactoe.init()" style="background:#25d366;color:white;padding:1rem 2rem;border:none;border-radius:25px;cursor:pointer;">New Game</button>
+    </div>
+  </div>
+
+  <!-- Real Life Quiz Modal -->
+  <div id="reallife" class="game-modal">
+    <div class="game-container quiz-container">
+      <button class="close-game" onclick="GameManager.hide('reallife')">&times;</button>
+      <h2>💔 Real Life Drama Quiz</h2>
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 10%;"></div>
+      </div>
+      <div class="quiz-score" id="quiz-score">Score: 0/0</div>
+      <div class="quiz-question" id="quiz-question"></div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <button onclick="GameManager.reallife.newQuiz()" class="play-btn" style="margin-top: 1rem;">New Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const GameManager = {
+      hangman: {
+        word: '', guessed: new Set(), lives: 6, gameOver: false,
+        words: ['cheating', 'heartbreak', 'revenge', 'ghosted', 'betrayal', 'crush', 'dmslide', 'situationship', 'breadcrumb', 'lovebomb'],
+        
+        newGame() {
+          this.word = this.words[Math.floor(Math.random() * this.words.length)].toUpperCase();
+          this.guessed.clear();
+          this.lives = 6;
+          this.gameOver = false;
+          this.updateDisplay();
+          this.initKeyboard();
+          document.getElementById('hangman-status').textContent = 'Guess the word!';
+          document.getElementById('hangman-status').style.color = '#eee';
+        },
+        
+        guess(letter) {
+          if (this.gameOver || this.guessed.has(letter) || !/[A-Z]/.test(letter)) return;
+          
+          this.guessed.add(letter);
+          const keyBtn = document.querySelector(`[data-letter="${letter}"]`);
+          keyBtn.classList.add('used');
+          
+          if (!this.word.includes(letter)) {
+            this.lives--;
+            keyBtn.classList.add('wrong');
+            document.getElementById('hangman-status').textContent = `Wrong guess! ${this.lives} lives left`;
+            document.getElementById('hangman-status').style.color = '#ff6b35';
+          } else {
+            document.getElementById('hangman-status').textContent = 'Good guess!';
+            document.getElementById('hangman-status').style.color = '#25d366';
+          }
+          
+          this.updateDisplay();
+          
+          if (this.word.split('').every(c => this.guessed.has(c))) {
+            this.gameOver = true;
+            setTimeout(() => {
+              document.getElementById('hangman-status').innerHTML = `🎉 <strong>YOU WIN!</strong> Word: <span style="color:#25d366;">${this.word}</span>`;
+              document.getElementById('hangman-status').style.color = '#25d366';
+            }, 500);
+          }
+          
+          if (this.lives <= 0) {
+            this.gameOver = true;
+            setTimeout(() => {
+              document.getElementById('hangman-status').innerHTML = `💀 <strong>GAME OVER!</strong> Word was: <span style="color:#ff4444;">${this.word}</span>`;
+              document.getElementById('hangman-status').style.color = '#ff4444';
+            }, 500);
+          }
+        },
+        
+        updateDisplay() {
+          const display = this.word.split('').map(c => this.guessed.has(c) ? c : '_').join(' ');
+          document.getElementById('hangman-word').textContent = display;
+          document.getElementById('hangman-lives').textContent = `Lives: ${this.lives}`;
+          const parts = ['😭', '😢', '😰', '😵', '💀', '🪦'];
+          document.getElementById('hangman-drawing').textContent = parts[6 - this.lives];
+        },
+        
+        initKeyboard() {
+          const keyboard = document.getElementById('hangman-keyboard');
+          keyboard.innerHTML = '';
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
+            const btn = document.createElement('button');
+            btn.textContent = letter;
+            btn.className = 'hangman-key';
+            btn.dataset.letter = letter;
+            btn.onclick = () => this.guess(letter);
+            keyboard.appendChild(btn);
+          });
+        }
+      },
+
+      unscramble: {
+        words: ['cheating', 'heartbreak', 'situationship', 'breadcrumb', 'lovebomb', 'ghosted', 'betrayal', 'crush', 'dmslide', 'revenge'],
+        currentWord: '', scrambled: [], score: 0, highScore: localStorage.getItem('unscrambleHighScore') || 0,
+        
+        newWord() {
+          this.currentWord = this.words[Math.floor(Math.random() * this.words.length)];
+          this.scrambled = this.currentWord.split('').sort(() => Math.random() - 0.5);
+          document.getElementById('unscramble-word').textContent = '?'.repeat(this.currentWord.length);
+          this.renderLetters();
+          document.getElementById('high-score').textContent = `High Score: ${this.highScore}`;
+          document.getElementById('unscramble-input').value = '';
+        },
+        
+        renderLetters() {
+          const container = document.getElementById('unscramble-letters');
+          container.innerHTML = '';
+          this.scrambled.forEach((letter, i) => {
+            const span = document.createElement('span');
+            span.textContent = letter;
+            span.className = 'unscramble-letter';
+            span.onclick = () => {
+              navigator.clipboard.writeText(letter).catch(() => {});
+              span.style.transform = 'scale(0.95)';
+              setTimeout(() => span.style.transform = '', 150);
+            };
+            container.appendChild(span);
+          });
+        },
+        
+        checkAnswer() {
+          const answer = document.getElementById('unscramble-input').value.toLowerCase().trim();
+          if (answer === this.currentWord.toLowerCase()) {
+            this.score += 10;
+            document.getElementById('unscramble-input').style.border = '2px solid #25d366';
+            if (this.score > this.highScore) {
+              this.highScore = this.score;
+              localStorage.setItem('unscrambleHighScore', this.highScore);
+              document.getElementById('high-score').textContent = `High Score: ${this.highScore} 🎉 NEW RECORD!`;
+            }
+            setTimeout(() => {
+              document.getElementById('unscramble-input').style.border = '';
+              this.newWord();
+            }, 1000);
+          } else {
+            document.getElementById('unscramble-input').style.border = '2px solid #ff4444';
+            setTimeout(() => document.getElementById('unscramble-input').style.border = '', 500);
+          }
+        }
+      },
+
+      tictactoe: {
+        board: Array(9).fill(''), currentPlayer: 'X', gameActive: true,
+        init() {
+          this.board.fill(''); this.currentPlayer = 'X'; this.gameActive = true;
+          document.getElementById('ttt-status').textContent = "Your turn (X)";
+          this.renderBoard();
+        },
+        renderBoard() {
+          const container = document.getElementById('ttt-board');
+          container.innerHTML = '';
+          this.board.forEach((cell, index) => {
+            const btn = document.createElement('button');
+            btn.textContent = cell;
+            btn.onclick = () => this.playMove(index);
+            container.appendChild(btn);
+          });
+        },
+        playMove(index) {
+          if (!this.gameActive || this.board[index] !== '') return;
+          this.board[index] = this.currentPlayer;
+          this.renderBoard();
+          if (this.checkWinner(this.currentPlayer)) {
+            document.getElementById('ttt-status').textContent = `🎉 ${this.currentPlayer} Wins!`;
+            this.gameActive = false;
+            return;
+          }
+          if (!this.board.includes('')) {
+            document.getElementById('ttt-status').textContent = 'Draw!';
+            this.gameActive = false;
+            return;
+          }
+          this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+          document.getElementById('ttt-status').textContent = `${this.currentPlayer === 'X' ? 'Your' : 'AI'} turn (${this.currentPlayer})`;
+          if (this.currentPlayer === 'O') setTimeout(() => this.aiMove(), 400);
+        },
+        checkWinner(player) {
+          const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+          return wins.some(combo => combo.every(i => this.board[i] === player));
+        },
+        aiMove() {
+          const empty = this.board.map((v,i) => v===''?i:null).filter(v=>v!==null);
+          const move = empty[Math.floor(Math.random()*empty.length)];
+          this.playMove(move);
+        }
+      },
+
+      reallife: {
+        questions: [
+          {
+            question: "How long does the average person cry after being cheated on?",
+            options: ['1-2 weeks', '1-3 months', '6+ months', 'Never stops'],
+            correct: 1,
+            fact: "💔 1-3 MONTHS - Most people cry daily for 6-8 weeks straight"
+          },
+          {
+            question: "What's the #1 sign your partner is cheating?",
+            options: ['Always on phone', 'New clothes/gym', 'Late nights work', 'All of these'],
+            correct: 3,
+            fact: "🔥 ALL 3 - Phone obsession + glow up + excuses = 95% cheating confirmed"
+          },
+          {
+            question: "Best petty revenge after being cheated on?",
+            options: ['Post their nudes', 'Catfish them back', 'Sleep with their bestie', 'All 3 petty AF'],
+            correct: 3,
+            fact: "😈 ALL 3 - Triple threat revenge hits different. Make them regret everything"
+          },
+          {
+            question: "How many people cheat in relationships?",
+            options: ['1 in 10', '1 in 3', '1 in 2', 'Everyone eventually'],
+            correct: 1,
+            fact: "📊 1 IN 3 - 33% of people admit cheating. You're not alone in the pain"
+          },
+          {
+            question: "Situationships usually last how long before ghosting?",
+            options: ['1-2 weeks', '1-3 months', '6+ months', 'Forever (never official)'],
+            correct: 1,
+            fact: "👻 1-3 MONTHS - Perfect amount of time to catch feelings then get ghosted"
+          },
+          {
+            question: "What hurts worse than getting cheated on?",
+            options: ['Them posting happy pics', 'Finding their new side chick', 'Them denying it', 'All of these'],
+            correct: 3,
+            fact: "💥 ALL 3 - The lies + new relationship posts = maximum heartbreak damage"
+          }
+        ],
+        currentQuestion: 0, score: 0, highScore: localStorage.getItem('reallifeHighScore') || 0,
+
+        newQuiz() {
+          this.currentQuestion = 0;
+          this.score = 0;
+          this.showQuestion();
+        },
+
+        showQuestion() {
+          const q = this.questions[this.currentQuestion];
+          document.getElementById('quiz-question').textContent = q.question;
+          const options = document.getElementById('quiz-options');
+          options.innerHTML = '';
+          q.options.forEach((option, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = option;
+            btn.className = 'quiz-option';
+            btn.onclick = () => this.selectAnswer(i);
+            options.appendChild(btn);
+          });
+          this.updateProgress();
+        },
+
+        selectAnswer(selected) {
+          const q = this.questions[this.currentQuestion];
+          const options = document.querySelectorAll('.quiz-option');
+          options.forEach((btn, i) => {
+            btn.classList.add('disabled');
+            if (i === q.correct) btn.classList.add('correct');
+            else if (i === selected && i !== q.correct) btn.classList.add('wrong');
+          });
+
+          if (selected === q.correct) {
+            this.score++;
+          }
+
+          setTimeout(() => {
+            document.getElementById('quiz-question').innerHTML = `<span style="color:#ff6b35;font-size:1.3em;">${q.fact}</span>`;
+            this.currentQuestion++;
+            if (this.currentQuestion < this.questions.length) {
+              setTimeout(() => this.showQuestion(), 4000);
+            } else {
+              this.showResults();
+            }
+          }, 2000);
+        },
+
+        updateProgress() {
+          const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
+          document.getElementById('quiz-progress-bar').style.width = progress + '%';
+          document.getElementById('quiz-score').textContent = `Score: ${this.score}/${this.currentQuestion}`;
+        },
+
+        showResults() {
+          if (this.score > this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('reallifeHighScore', this.highScore);
+          }
+          document.getElementById('quiz-question').innerHTML = `
+            <div style="font-size: 2rem;">
+              🔥 Final Score: ${this.score}/${this.questions.length}<br>
+              <span style="color:#25d366;">High Score: ${this.highScore} ${this.score === this.highScore ? '🥇 NEW PB!' : ''}</span>
+            </div>
+          `;
+          document.getElementById('quiz-progress-bar').style.width = '100%';
+        }
+      },
+
+      hide(id) { document.getElementById(id).style.display = 'none'; },
+      
+      show(id) {
+        document.getElementById(id).style.display = 'flex';
+        if (id === 'hangman') {
+          GameManager.hangman.newGame();
+        } else if (id === 'unscramble') {
+          GameManager.unscramble.newWord();
+        } else if (id === 'tictactoe') {
+          GameManager.tictactoe.init();
+        } else if (id === 'reallife') {
+          GameManager.reallife.newQuiz();
+        }
+      }
+    };
+
+    // Event Listeners
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.addEventListener('click', () => GameManager.show(card.dataset.game));
+    });
+
+    window.addEventListener('click', e => {
+      if (e.target.classList.contains('game-modal')) GameManager.hide(e.target.id);
+    });
+
+    // Enter key for unscramble
+    document.addEventListener('DOMContentLoaded', () => {
+      const unscrambleInput = document.getElementById('unscramble-input');
+      if (unscrambleInput) {
+        unscrambleInput.addEventListener('keypress', e => {
+          if (e.key === 'Enter') GameManager.unscramble.checkAnswer();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Games - GroupsZA</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #121213 0%, #1a1a2e 50%, #16213e 100%);
+      color: #eee;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    header { text-align: center; padding: 2rem 0; }
+    .site-title {
+      font-size: 3rem; font-weight: 900;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #667eea);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #25d366; color: white; padding: 0.8rem 1.5rem;
+      border-radius: 25px; text-decoration: none; font-weight: 600;
+      margin-bottom: 1rem; box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover { background: #1dad53; transform: translateY(-2px); }
+
+    .hero {
+      text-align: center; margin: 2rem 0 4rem; padding: 2rem;
+      background: rgba(255,255,255,0.05); border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .hero h1 {
+      font-size: 2.5rem; margin-bottom: 1rem;
+      background: linear-gradient(45deg, #fff, #ddd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .games-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem; margin-bottom: 3rem;
+    }
+    .game-card {
+      background: rgba(34,34,34,0.9); border-radius: 20px; padding: 2rem;
+      text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .game-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(255,107,53,0.3); }
+    .game-icon {
+      font-size: 4rem; margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255,107,53,0.5));
+    }
+    .game-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
+    .play-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2); color: white;
+      padding: 1rem 2.5rem; border: none; border-radius: 30px; font-size: 1.1rem;
+      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center;
+      gap: 0.8rem; box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+      transition: all 0.3s ease; margin-top: 1rem;
+    }
+    .play-btn:hover { background: linear-gradient(45deg, #5a6fd8, #6a4190); transform: translateY(-3px); }
+
+    /* Game Modal */
+    .game-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center;
+      padding: 10px;
+    }
+    .game-container {
+      background: #222; border-radius: 20px; padding: 2rem; max-width: 600px;
+      max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px #ff6b35;
+    }
+    .close-game {
+      position: absolute; top: 1rem; right: 1.5rem; background: #ff4444; color: white;
+      border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem;
+      cursor: pointer; z-index: 10001;
+    }
+
+    /* Hangman Styles */
+    .hangman-container { text-align: center; }
+    .hangman-word { font-size: 2.5rem; letter-spacing: 0.5rem; margin: 1rem 0; font-weight: bold; }
+    .hangman-lives { font-size: 1.5rem; color: #ff6b35; margin: 1rem 0; }
+    .hangman-drawing { font-size: 3rem; margin: 1rem 0; line-height: 1; }
+    .hangman-status { 
+      font-size: 1.8rem; font-weight: bold; margin: 1rem 0; min-height: 2.5rem;
+      padding: 1rem; border-radius: 10px; background: rgba(255,255,255,0.1);
+    }
+    .hangman-keyboard {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; max-width: 500px;
+      margin: 2rem auto;
+    }
+    .hangman-key { 
+      padding: 1rem; font-size: 1.2rem; border: none; border-radius: 8px; 
+      background: #444; color: white; cursor: pointer; transition: all 0.3s ease;
+    }
+    .hangman-key.used { background: #666; cursor: not-allowed; }
+    .hangman-key.wrong { background: #ff4444; animation: shake 0.5s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+    /* Unscramble Styles */
+    .unscramble-word { font-size: 2.5rem; margin: 1rem 0; min-height: 3.5rem; }
+    .unscramble-letters {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 2rem 0;
+      min-height: 4rem;
+    }
+    .unscramble-letter { 
+      width: 60px; height: 60px; font-size: 1.8rem; font-weight: bold; border: none;
+      border-radius: 10px; background: #444; color: white; cursor: pointer; user-select: none;
+      transition: all 0.3s ease;
+    }
+    .unscramble-letter:hover { background: #555; transform: scale(1.1); }
+    .unscramble-input { 
+      font-size: 1.5rem; padding: 1rem; border-radius: 10px; border: 2px solid #444; 
+      background: #333; color: white; margin: 1rem; width: 70%; text-align: center;
+    }
+    .unscramble-input:focus { outline: none; border-color: #ff6b35; }
+    .high-score { font-size: 1.2rem; color: #25d366; font-weight: bold; }
+
+    /* Tic Tac Toe Styles */
+    #ttt-board {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 2rem 0; 
+      max-width: 300px; margin-left: auto; margin-right: auto;
+    }
+    #ttt-board button {
+      width: 90px; height: 90px; font-size: 2.5rem; font-weight: bold; border: none;
+      background: #444; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s;
+    }
+    #ttt-board button:hover:not(:disabled) { background: #555; transform: scale(1.05); }
+    #ttt-board button:disabled { cursor: not-allowed; opacity: 0.6; }
+    #ttt-status { font-size: 1.5rem; font-weight: bold; margin: 1rem 0; min-height: 2rem; }
+
+    /* Real Life Quiz Styles */
+    .quiz-container { text-align: center; }
+    .quiz-question { font-size: 1.6rem; margin: 1.5rem 0; font-weight: bold; line-height: 1.4; }
+    .quiz-options { display: grid; gap: 1rem; margin: 2rem 0; }
+    .quiz-option {
+      padding: 1.2rem; font-size: 1.1rem; border: none; border-radius: 12px;
+      background: #444; color: white; cursor: pointer; transition: all 0.3s ease;
+      font-weight: 600; text-align: left;
+    }
+    .quiz-option:hover:not(.disabled) { background: #555; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,53,0.3); }
+    .quiz-option.correct { background: linear-gradient(45deg, #25d366, #20b55a); animation: pulse 0.6s; }
+    .quiz-option.wrong { background: linear-gradient(45deg, #ff4444, #cc3333); animation: shake 0.5s; }
+    .quiz-option.disabled { opacity: 0.6; cursor: not-allowed; }
+    .quiz-score { font-size: 1.5rem; color: #25d366; margin: 1rem 0; font-weight: bold; }
+    .quiz-progress { background: #333; height: 10px; border-radius: 5px; margin: 1rem 0; overflow: hidden; }
+    .quiz-progress-bar { height: 100%; background: linear-gradient(90deg, #ff6b35, #f7931e); transition: width 0.5s ease; border-radius: 5px; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+    /* Memory Match Styles */
+    #memory-board {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 2rem 0; 
+      max-width: 400px; margin-left: auto; margin-right: auto;
+    }
+    .memory-card {
+      width: 85px; height: 85px; font-size: 2rem; border: none; border-radius: 12px;
+      background: #444; color: white; cursor: pointer; transition: all 0.3s ease;
+    }
+    .memory-card:hover:not(.matched):not(.flipped) { background: #555; transform: scale(1.05); }
+    .memory-card.matched { background: #25d366 !important; cursor: default; }
+    .memory-card.flipped { background: linear-gradient(45deg, #667eea, #764ba2); }
+
+    /* Number Guess Styles */
+    #guess-input {
+      font-size: 1.5rem; padding: 1rem; border-radius: 10px; border: 2px solid #444;
+      background: #333; color: white; width: 60%; margin: 1rem 0; text-align: center;
+    }
+    #guess-input:focus { outline: none; border-color: #ff6b35; }
+    #guess-input:disabled { background: #555; cursor: not-allowed; }
+    #guess-feedback { font-size: 1.3rem; font-weight: bold; margin: 1rem 0; min-height: 2rem; }
+
+    @media (max-width: 768px) {
+      .site-title { font-size: 2.2rem; }
+      .games-grid { grid-template-columns: 1fr; }
+      .game-icon { font-size: 3rem; }
+      .hangman-keyboard { grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
+      .hangman-key { padding: 0.8rem; font-size: 1rem; }
+      .unscramble-input, #guess-input { width: 90%; }
+      .quiz-options { grid-template-columns: 1fr; }
+      .quiz-question { font-size: 1.4rem; }
+      #ttt-board button, .memory-card { width: 70px; height: 70px; font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to GroupsZA</a>
+      <h1 class="site-title">🎮 Games</h1>
+    </header>
+
+    <section class="hero">
+      <h1>Play Solo - No Internet Needed!</h1>
+      <p>Classic single-player games that work completely offline</p>
+    </section>
+
+    <section class="games-grid">
+      <!-- Hangman -->
+      <article class="game-card" data-game="hangman">
+        <div class="game-icon"><i class="fas fa-font"></i></div>
+        <h3>Hangman</h3>
+        <p>Guess the word before the man hangs! 6 wrong guesses.</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Word Unscramble -->
+      <article class="game-card" data-game="unscramble">
+        <div class="game-icon"><i class="fas fa-puzzle-piece"></i></div>
+        <h3>Word Unscramble</h3>
+        <p>Rearrange letters to form words! Beat your high score.</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Tic Tac Toe -->
+      <article class="game-card" data-game="tictactoe">
+        <div class="game-icon"><i class="fas fa-th"></i></div>
+        <h3>Tic Tac Toe</h3>
+        <p>Play against unbeatable AI - perfect challenge!</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Real Life Drama -->
+      <article class="game-card" data-game="reallife">
+        <div class="game-icon"><i class="fas fa-heart-broken"></i></div>
+        <h3>Real Life Drama</h3>
+        <p>Cheating, heartbreak, revenge - shit everyone deals with</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Memory Match -->
+      <article class="game-card" data-game="memorymatch">
+        <div class="game-icon"><i class="fas fa-clone"></i></div>
+        <h3>Memory Match</h3>
+        <p>Find matching emoji pairs before time runs out!</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+
+      <!-- Number Guess -->
+      <article class="game-card" data-game="numberguess">
+        <div class="game-icon"><i class="fas fa-hashtag"></i></div>
+        <h3>Number Guess</h3>
+        <p>Guess the secret number (1-100) in 10 tries or less!</p>
+        <button class="play-btn"><i class="fas fa-play"></i> Play</button>
+      </article>
+    </section>
+  </div>
+
+  <!-- Game Modals -->
+  <div id="hangman" class="game-modal">
+    <div class="game-container hangman-container">
+      <button class="close-game" onclick="GameManager.hide('hangman')">&times;</button>
+      <h2>🔤 Hangman</h2>
+      <div class="hangman-drawing" id="hangman-drawing">🏃</div>
+      <div class="hangman-word" id="hangman-word"></div>
+      <div class="hangman-lives" id="hangman-lives">Lives: 6</div>
+      <div class="hangman-status" id="hangman-status"></div>
+      <div class="hangman-keyboard" id="hangman-keyboard"></div>
+      <button onclick="GameManager.hangman.newGame()" class="play-btn" style="margin-top: 1rem;">New Game</button>
+    </div>
+  </div>
+
+  <div id="unscramble" class="game-modal">
+    <div class="game-container">
+      <button class="close-game" onclick="GameManager.hide('unscramble')">&times;</button>
+      <h2>🧩 Word Unscramble</h2>
+      <div class="high-score" id="high-score">High Score: 0</div>
+      <div class="unscramble-word" id="unscramble-word"></div>
+      <div class="unscramble-letters" id="unscramble-letters"></div>
+      <input type="text" id="unscramble-input" class="unscramble-input" placeholder="Type your answer..." maxlength="20">
+      <div style="margin-top: 1rem;">
+        <button onclick="GameManager.unscramble.checkAnswer()" class="play-btn">Check Answer</button>
+        <button onclick="GameManager.unscramble.newWord()" class="play-btn" style="background: #f7931e;">Next Word</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tictactoe" class="game-modal">
+    <div class="game-container">
+      <button class="close-game" onclick="GameManager.hide('tictactoe')">&times;</button>
+      <h2>❌⭕ Tic Tac

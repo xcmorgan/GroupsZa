@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GroupsZA - South African WhatsApp Groups</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: #121213;
+      color: #eee;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 0 1rem;
+      user-select: none;
+    }
+
+    .site-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #eee;
+      font-family: 'Segoe UI Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-shadow: 0 0 8px rgba(0,0,0,0.9);
+      cursor: default;
+      user-select: none;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 1rem 0 3rem;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      color: #fff;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2rem 0 3rem;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 1.1rem 2.2rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .action-btn:hover {
+      background: linear-gradient(45deg, #5a6fd8, #6a4190);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+    }
+    /* Specific styles for buttons */
+    .action-btn.game-btn {
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+    }
+    .action-btn.game-btn:hover {
+      background: linear-gradient(45deg, #e55a2b, #d68215);
+    }
+    .action-btn.explore-btn {
+      background: linear-gradient(45deg, #00d2d3, #89f7ef);
+    }
+    .action-btn.explore-btn:hover {
+      background: linear-gradient(45deg, #00b8b9, #6fe7d9);
+    }
+
+    /* About section */
+    .about {
+      background: white;
+      color: #111;
+      border-radius: 12px;
+      padding: 20px 30px;
+      margin-bottom: 3rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.2);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      user-select: none;
+    }
+
+    /* Accordion styles */
+    .accordion-button {
+      background: #222;
+      cursor: pointer;
+      padding: 1rem 1.5rem;
+      width: 100%;
+      border: none;
+      outline: none;
+      text-align: left;
+      font-size: 1.25rem;
+      color: #eee;
+      border-radius: 12px;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 6px 15px rgb(0 0 0 / 0.8);
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .accordion-button:hover,
+    .accordion-button.active {
+      background: #444;
+    }
+
+    .accordion-button i {
+      transition: transform 0.3s ease;
+    }
+    .accordion-button.active i {
+      transform: rotate(90deg);
+    }
+
+    /* Accordion content */
+    .accordion-content {
+      background: #222;
+      color: #ddd;
+      padding: 1rem 1.5rem;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.9);
+      margin-bottom: 1.6rem;
+      display: none;
+      overflow: hidden;
+    }
+
+    /* Grid for groups */
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1rem;
+    }
+
+    /* Group card styles */
+    .group-card {
+      background: #363636;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgb(0 0 0 / 0.8);
+      padding: 1rem;
+      color: #eee;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 260px;
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+
+    .group-image {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 3px solid transparent;
+    }
+
+    .group-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .group-image:empty::before {
+      content: "📷 Add Image Here";
+      color: #888;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    /* Group title and description styles */
+    .group-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .group-card p {
+      flex-grow: 1;
+      font-style: italic;
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    /* Join button styles */
+    .join-btn {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 0.7rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+      transition: all 0.2s ease;
+    }
+    .join-btn:hover:not(:disabled) {
+      background-color: #1dad53;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+    }
+    .join-btn:disabled {
+      background-color: #555 !important;
+      cursor: not-allowed;
+      box-shadow: none;
+      color: #aaa;
+    }
+
+    /* Locked group style */
+    .group-card.locked {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+      position: relative;
+    }
+    .group-card.locked::after {
+      content: "🔒 Locked";
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #cc0000dd;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      box-shadow: 0 0 8px #cc0000cc;
+      pointer-events: none;
+    }
+
+    /* Overlay for unavailable sections */
+    .disabled-overlay {
+      position: relative;
+    }
+    .disabled-overlay::after {
+      content: "🔒 Not Available";
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: #cc0000dd;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      pointer-events: none;
+      box-shadow: 0 0 8px #cc0000cc;
+    }
+
+    /* Disclaimer styles */
+    .disclaimer {
+      background: #222;
+      color: #ffdddd;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-size: 0.95rem;
+      box-shadow: 0 5px 15px rgb(255 0 0 / 0.3);
+    }
+    .disclaimer strong {
+      color: #f44336;
+    }
+
+    /* Request section styles */
+    .request-section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      box-shadow: 0 12px 26px rgb(0 0 0 / 0.2);
+    }
+    .request-section h2 {
+      color: #111;
+      margin-bottom: 0.5rem;
+    }
+    .free-text {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .request-btn {
+      background: linear-gradient(45deg, #007749, #001489);
+      color: white;
+      padding: 1rem 2.8rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 25px rgba(0, 116, 73, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+    .request-btn:hover {
+      background: linear-gradient(45deg, #005632, #001058);
+      box-shadow: 0 10px 30px rgba(0, 80, 51, 0.9);
+      transform: translateY(-1px);
+    }
+
+    /* Footer styles */
+    footer {
+      text-align: center;
+      padding: 1.8rem 1rem;
+      color: #888;
+      border-top: 1px solid #333;
+      user-select: none;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .site-title { font-size: 2rem; }
+      .hero h1 { font-size: 1.6rem; }
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      .action-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+      .groups-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+      }
+      .group-card {
+        min-height: 220px;
+        padding: 0.8rem;
+      }
+      .group-image {
+        height: 90px;
+      }
+      .group-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+      .group-card p { font-size: 0.85rem; }
+      .join-btn { padding: 0.5rem 1.2rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1 class="site-title">GroupsZA</h1>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Find WhatsApp Group Chats</h1>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="action-buttons">
+      <a href="games.html" class="action-btn game-btn" rel="noopener">
+        <i class="fas fa-gamepad" style="font-size: 1.4rem;"></i>
+        Play Games
+      </a>
+      <a href="https://xcmorgan.github.io/Morgan-s_Websites/" class="action-btn explore-btn" target="_blank" rel="noopener">
+        <i class="fas fa-gem" style="font-size: 1.4rem;"></i>
+        Explore Morgan's Websites
+      </a>
+    </section>
+
+    <!-- About -->
+    <section class="about">
+      <h2>About GroupsZA</h2>
+      <p>
+        This is a website where users can find socialising group chats on WhatsApp.
+        Connect with people, make friends, and join active South African communities.
+      </p>
+    </section>
+
+    <!-- Accordion: Socializing -->
+    <button class="accordion-button" aria-expanded="false" aria-controls="socializing-panel" id="socializing-btn">
+      Socializing <i class="fas fa-chevron-right"></i>
+    </button>
+    <div class="accordion-content" id="socializing-panel" hidden>
+      <div class="groups-grid">
+        <article class="group-card" role="group" aria-labelledby="group1title">
+          <div class="group-image">
+            <img src="justvibes.jpeg" alt="Just Vibes Group Image" />
+          </div>
+          <h3 id="group1title">Just Vibes</h3>
+          <p>A friendly group for casual chats and good vibes only.</p>
+          <a href="https://chat.whatsapp.com/Kg31RQ75WsKEerd43BGZXg?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
+        </article>
+        <article class="group-card" role="group" aria-labelledby="group2title">
+          <div class="group-image">
+            <img src="funzies.jpg" alt="funziessssss Group Image" />
+          </div>
+          <h3 id="group2title">funziessssss😝😝🩷</h3>
+          <p>We qwel on the highest level.</p>
+          <a href="https://chat.whatsapp.com/LFCmJRWvTh0KrDG0R0rOR6?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
+        </article>
+        <article class="group-card" role="group" aria-labelledby="group3title">
+          <div class="group-image">
+            <img src="squad.jpg" alt="Group 3 Image" />
+          </div>
+          <h3 id="group3title">Squad♦</h3>
+          <p>Group opens 15 December 2025
+Add your friends and share link♦️</p>
+          <a href="https://chat.whatsapp.com/E45kctlP7CdFLWygPAyc0X?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
+        </article>
+        <!-- Locked groups -->
+        <article class="group-card locked" role="group" aria-labelledby="group7title">
+          <div class="group-image">
+            <img src="images/locked.jpg" alt="Locked Group Image" />
+          </div>
+          <h3 id="group7title">Locked Group 1</h3>
+          <p>This group is locked and unavailable.</p>
+          <button class="join-btn" disabled>Unavailable</button>
+        </article>
+        <article class="group-card locked" role="group" aria-labelledby="group8title">
+          <div class="group-image">
+            <img src="images/locked.jpg" alt="Locked Group Image" />
+          </div>
+          <h3 id="group8title">Locked Group 2</h3>
+          <p>This group is locked and unavailable.</p>
+          <button class="join-btn" disabled>Unavailable</button>
+        </article>
+        <article class="group-card locked" role="group" aria-labelledby="group9title">
+          <div class="group-image">
+            <img src="images/locked.jpg" alt="Locked Group Image" />
+          </div>
+          <h3 id="group9title">Locked Group 3</h3>
+          <p>This group is locked and unavailable.</p>
+          <button class="join-btn" disabled>Unavailable</button>
+        </article>
+      </div>
+    </div>
+
+    <!-- Unlocked WhatsApp Channels -->
+    <button class="accordion-button" aria-expanded="false" aria-controls="channels-panel" id="channels-btn">
+      WhatsApp Channels <i class="fas fa-lock"></i>
+    </button>
+    <div class="accordion-content" id="channels-panel" hidden>
+      <div class="groups-grid" id="channels-grid" aria-disabled="false">
+        <!-- Initially empty, will show message on toggle -->
+        <article class="group-card" role="group" aria-labelledby="channel1title">
+          <div class="group-image">
+            <img src="images/channels.jpg" alt="Channels Image" />
+          </div>
+          <h3 id="channel1title">No channels added yet</h3>
+          <p>This section is currently empty.</p>
+          <button class="join-btn" disabled>Unavailable</button>
+        </article>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <section class="disclaimer">
+      <h3>⚠️ Important Notice</h3>
+      <p>
+        <strong>Respect all group rules.</strong> GroupsZA is a directory only. I am not responsible for any content, transactions, or activities in these groups. Join at your own risk.
+      </p>
+    </section>
+
+    <!-- Request Group -->
+    <section class="request-section">
+      <h2>Want to Add Your Group/Channel?</h2>
+      <p class="free-text">✅ It's FREE!</p>
+      <a href="https://wa.me/638100407?text=Hi%20GroupsZA%20-%20I%20want%20to%20add%20my%20group" target="_blank" class="request-btn" rel="noopener">
+        <i class="fab fa-whatsapp"></i> Request to Add Group/Channel
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 GroupsZA Prince Morgan</p>
+    </footer>
+  </div>
+
+  <script>
+    // Toggle socializing section
+    document.querySelectorAll('.accordion-button').forEach(btn => {
+      if (btn.id === 'channels-btn') {
+        // Special handling for channels
+        btn.addEventListener('click', () => {
+          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!isExpanded));
+          const content = document.getElementById(btn.getAttribute('aria-controls'));
+          if (content) {
+            if (isExpanded) {
+              content.style.display = 'none';
+            } else {
+              // Show message "No channels added yet"
+              document.getElementById('channels-grid').innerHTML = `
+                <article class="group-card" role="group" aria-labelledby="channel1title">
+                  <div class="group-image">
+                    <img src="images/channels.jpg" alt="Channels Image" />
+                  </div>
+                  <h3 id="channel1title">No channels added yet</h3>
+                  <p>This section is currently empty.</p>
+                  <button class="join-btn" disabled>Unavailable</button>
+                </article>`;
+              content.style.display = 'block';
+            }
+          }
+        });
+      } else {
+        // Regular toggle for other accordions
+        btn.addEventListener('click', () => {
+          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!isExpanded));
+          const content = document.getElementById(btn.getAttribute('aria-controls'));
+          if (content) {
+            if (isExpanded) {
+              content.style.display = 'none';
+            } else {
+              content.style.display = 'block';
+            }
+          }
+        });
+      }
+    });
+
+    // Initialize channels section as closed
+    document.getElementById('channels-btn').setAttribute('aria-expanded', 'false');
+    document.getElementById('channels-panel').style.display = 'none';
+  </script>
+</body>
+</html>
