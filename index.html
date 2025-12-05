@@ -1,597 +1,917 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GroupsZA - South African WhatsApp Groups</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GroupsZA - South African WhatsApp Groups</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* --- Full CSS with scroll fix --- */
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      background: #121213;
-      color: #eee;
-      min-height: 100vh;
-    }
+        /* New Section: Website Request */
+        .website-request-section {
+            background: linear-gradient(135deg, #1c1c1c, #3a3a3a);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            box-shadow: 0 12px 26px rgb(0 0 0 / 0.5);
+            color: #eee;
+        }
+        .website-request-section h2 {
+            color: #00d2d3;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .website-request-section .price-text {
+            color: #ffc900;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .website-request-section .info-text {
+            color: #bbb;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .request-website-btn {
+            background: linear-gradient(45deg, #ff9900, #ffc900);
+            color: #111;
+            padding: 1rem 2.8rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 25px rgba(255, 153, 0, 0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+        .request-website-btn:hover {
+            background: linear-gradient(45deg, #cc7a00, #cca300);
+            box-shadow: 0 10px 30px rgba(255, 153, 0, 0.8);
+            transform: translateY(-1px);
+        }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+        /* Responsive adjustment for the new section */
+        @media (max-width: 768px) {
+            .website-request-section {
+                padding: 1.5rem 1.5rem;
+            }
+            .website-request-section h2 {
+                font-size: 1.6rem;
+            }
+            .request-website-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
 
-    header {
-      text-align: center;
-      padding: 2rem 0 1rem;
-      user-select: none;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .site-title {
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: #eee;
-      font-family: 'Segoe UI Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-shadow: 0 0 8px rgba(0,0,0,0.9);
-      cursor: default;
-      user-select: none;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: #121213;
+            color: #eee;
+            min-height: 100vh;
+        }
 
-    .hero {
-      text-align: center;
-      margin: 1rem 0 3rem;
-    }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .hero h1 {
-      font-size: 2.2rem;
-      color: #fff;
-    }
+        header {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            user-select: none;
+        }
 
-    /* Action Buttons */
-    .action-buttons {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      margin: 2rem 0 3rem;
-      flex-wrap: wrap;
-    }
+        .site-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #eee;
+            font-family: 'Segoe UI Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 0 0 8px rgba(0,0,0,0.9);
+            cursor: default;
+            user-select: none;
+        }
 
-    .action-btn {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-      padding: 1.1rem 2.2rem;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-    .action-btn:hover {
-      background: linear-gradient(45deg, #5a6fd8, #6a4190);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
-    }
-    /* Specific styles for buttons */
-    .action-btn.game-btn {
-      background: linear-gradient(45deg, #ff6b35, #f7931e);
-    }
-    .action-btn.game-btn:hover {
-      background: linear-gradient(45deg, #e55a2b, #d68215);
-    }
-    .action-btn.explore-btn {
-      background: linear-gradient(45deg, #00d2d3, #89f7ef);
-    }
-    .action-btn.explore-btn:hover {
-      background: linear-gradient(45deg, #00b8b9, #6fe7d9);
-    }
+        .hero {
+            text-align: center;
+            margin: 1rem 0 3rem;
+        }
 
-    /* About section */
-    .about {
-      background: white;
-      color: #111;
-      border-radius: 12px;
-      padding: 20px 30px;
-      margin-bottom: 3rem;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 12px 24px rgb(0 0 0 / 0.2);
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
+        .hero h1 {
+            font-size: 2.2rem;
+            color: #fff;
+        }
 
-    /* Scroll Container - only defined boxes, remove blurred boxes */
-    .scroll-container {
-      max-width: 100%;
-      max-height: 420px; /* Keep max height for scroll area */
-      overflow-x: auto;
-      overflow-y: hidden; /* Only horizontal scroll */
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid #444;
-      background: #1a1a1a;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: #666 #333;
-      display: flex; /* Use flex for horizontal scrolling */
-      gap: 1rem;
-    }
-    /* Custom scrollbar for Webkit */
-    .scroll-container::-webkit-scrollbar {
-      height: 8px;
-    }
-    .scroll-container::-webkit-scrollbar-track {
-      background: #333;
-      border-radius: 4px;
-    }
-    .scroll-container::-webkit-scrollbar-thumb {
-      background: #666;
-      border-radius: 4px;
-    }
-    .scroll-container::-webkit-scrollbar-thumb:hover {
-      background: #888;
-    }
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 2rem 0 3rem;
+            flex-wrap: wrap;
+        }
 
-    /* Accordion styles (unchanged) */
-    .accordion-button {
-      background: #222;
-      cursor: pointer;
-      padding: 1rem 1.5rem;
-      width: 100%;
-      border: none;
-      outline: none;
-      text-align: left;
-      font-size: 1.25rem;
-      color: #eee;
-      border-radius: 12px;
-      margin-bottom: 0.8rem;
-      box-shadow: 0 6px 15px rgb(0 0 0 / 0.8);
-      transition: background-color 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
-    }
-    .accordion-button:hover,
-    .accordion-button.active {
-      background: #444;
-    }
-    .accordion-button i {
-      transition: transform 0.3s ease;
-    }
-    .accordion-button.active i {
-      transform: rotate(90deg);
-    }
-    /* Accordion content */
-    .accordion-content {
-      background: #222;
-      color: #ddd;
-      padding: 0;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 6px 20px rgb(0 0 0 / 0.9);
-      margin-bottom: 1.6rem;
-      display: none;
-      overflow: hidden;
-    }
+        .action-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.1rem 2.2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .action-btn:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
 
-    /* Group grid for socializing category - make smaller for mobile and desktop */
-    .groups-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.2rem;
-      padding: 1rem;
-      /* remove min-width to allow flexible layout */
-    }
+        /* Specific styles for buttons */
+        .action-btn.game-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+        }
+        .action-btn.game-btn:hover {
+            background: linear-gradient(45deg, #e55a2b, #d68215);
+        }
+        .action-btn.explore-btn {
+            background: linear-gradient(45deg, #00d2d3, #89f7ef);
+        }
+        .action-btn.explore-btn:hover {
+            background: linear-gradient(45deg, #00b8b9, #6fe7d9);
+        }
 
-    /* Group card styles - smaller size for desktop and mobile */
-    .group-card {
-      background: #363636;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgb(0 0 0 / 0.8);
-      padding: 0.8rem;
-      color: #eee;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 180px;
-      transition: transform 0.2s ease;
-      position: relative;
-    }
-    .group-card:hover {
-      transform: translateY(-4px);
-    }
-    /* Image inside group card */
-    .group-image {
-      width: 100%;
-      height: 80px;
-      border-radius: 8px;
-      margin-bottom: 0.8rem;
-      background: #444;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .group-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    /* Title & description */
-    .group-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
-    .group-card p {
-      font-size: 0.85rem;
-      font-style: italic;
-      color: #ccc;
-    }
+        /* About section */
+        .about {
+            background: white;
+            color: #111;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 12px 24px rgb(0 0 0 / 0.2);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
 
-    /* Join button styles (unchanged) */
-    .join-btn {
-      background-color: #25d366;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.8rem;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      margin-top: 0.8rem;
-      font-size: 0.9rem;
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-      transition: all 0.2s ease;
-    }
-    .join-btn:hover:not(:disabled) {
-      background-color: #1dad53;
-      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
-    }
-    .join-btn:disabled {
-      background-color: #555 !important;
-      cursor: not-allowed;
-      box-shadow: none;
-      color: #aaa;
-    }
+        /* Scroll Container - only defined boxes, remove blurred boxes */
+        .scroll-container {
+            max-width: 100%;
+            max-height: 420px; /* Keep max height for scroll area */
+            overflow-x: auto;
+            overflow-y: hidden; /* Only horizontal scroll */
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #666 #333;
+            /* Removed display:flex here */
+        }
 
-    /* Locked group style (unchanged) */
-    .group-card.locked {
-      filter: blur(4px);
-      pointer-events: none;
-      user-select: none;
-      position: relative;
-    }
-    .group-card.locked::after {
-      content: "🔒 Locked";
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: #cc0000dd;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      box-shadow: 0 0 8px #cc0000cc;
-      pointer-events: none;
-    }
+        /* Keep flex layout for inner container to layout items horizontally */
+        .groups-grid {
+            display: flex; /* Flex for horizontal layout */
+            gap: 1rem;
+        }
 
-    /* Overlay for unavailable sections (unchanged) */
-    .disabled-overlay {
-      position: relative;
-    }
-    .disabled-overlay::after {
-      content: "🔒 Not Available";
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: #cc0000dd;
-      color: white;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      pointer-events: none;
-      box-shadow: 0 0 8px #cc0000cc;
-    }
+        /* Accordion styles (unchanged) */
+        .accordion-button {
+            background: #222;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            font-size: 1.25rem;
+            color: #eee;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 6px 15px rgb(0 0 0 / 0.8);
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+        .accordion-button:hover,
+        .accordion-button.active {
+            background: #444;
+        }
+        .accordion-button i {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button.active i {
+            transform: rotate(90deg);
+        }
+        /* Accordion content */
+        .accordion-content {
+            background: #222;
+            color: #ddd;
+            padding: 0;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 6px 20px rgb(0 0 0 / 0.9);
+            margin-bottom: 1.6rem;
+            display: none;
+            overflow: hidden;
+        }
 
-    /* Disclaimer styles (unchanged) */
-    .disclaimer {
-      background: #222;
-      color: #ffdddd;
-      border-radius: 12px;
-      padding: 1.5rem 2rem;
-      margin-bottom: 3rem;
-      text-align: center;
-      font-size: 0.95rem;
-      box-shadow: 0 5px 15px rgb(255 0 0 / 0.3);
-    }
-    .disclaimer strong {
-      color: #f44336;
-    }
+        /* Group grid for socializing category - make smaller for mobile and desktop */
+        .groups-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Keep flex and nowrap for horizontal scrolling */
+        }
 
-    /* Request section styles (unchanged) */
-    .request-section {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem 2.5rem;
-      margin-bottom: 3rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      box-shadow: 0 12px 26px rgb(0 0 0 / 0.2);
-    }
-    .request-section h2 {
-      color: #111;
-      margin-bottom: 0.5rem;
-    }
-    .free-text {
-      color: #666;
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
-    .request-btn {
-      background: linear-gradient(45deg, #007749, #001489);
-      color: white;
-      padding: 1rem 2.8rem;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      box-shadow: 0 8px 25px rgba(0, 116, 73, 0.7);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      justify-content: center;
-    }
-    .request-btn:hover {
-      background: linear-gradient(45deg, #005632, #001058);
-      box-shadow: 0 10px 30px rgba(0, 80, 51, 0.9);
-      transform: translateY(-1px);
-    }
+        /* Group card styles - smaller size for desktop and mobile */
+        .group-card {
+            background: #363636;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgb(0 0 0 / 0.8);
+            padding: 0.8rem;
+            color: #eee;
+            text-align: center;
+            min-height: 180px;
+            transition: transform 0.2s ease;
+            position: relative; /* Crucial for absolute positioning of the button */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align items to the top (Image + Name) */
+            min-width: 200px; /* Ensure cards are not too narrow */
+        }
+        .group-card:hover {
+            transform: translateY(-4px);
+        }
+        /* Image inside group card */
+        .group-image {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            background: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .group-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Title & description */
+        .group-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        /* Description and join button removed from main card view */
+        .group-card p, .group-card .join-btn {
+            display: none; 
+        }
 
-    /* Footer styles (unchanged) */
-    footer {
-      text-align: center;
-      padding: 1.8rem 1rem;
-      color: #888;
-      border-top: 1px solid #333;
-      user-select: none;
-    }
+        /* NEW: Styles for the detail button (positioned bottom-right) */
+        .detail-btn {
+            background-color: #00d2d3; /* Teal color */
+            color: #111;
+            border: none;
+            padding: 0.5rem 0.5rem;
+            border-radius: 50%; /* Make it circular */
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            /* Positioning to bottom-right of the card */
+            position: absolute;
+            bottom: 10px; /* Distance from bottom */
+            right: 10px; /* Distance from right */
+            width: 40px; 
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 210, 211, 0.6);
+            transition: all 0.2s ease;
+        }
+        .detail-btn:hover:not(:disabled) {
+            background-color: #00b8b9;
+            box-shadow: 0 6px 20px rgba(0, 210, 211, 0.8);
+        }
 
-    /* Responsive styles (unchanged) */
-    @media (max-width: 768px) {
-      .site-title { font-size: 2rem; }
-      .hero h1 { font-size: 1.6rem; }
-      .action-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-      }
-      .action-btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-      }
-      .scroll-container {
-        max-height: 350px;
-        padding: 0.8rem;
-        display: flex; /* Keep flex for horizontal scroll */
-      }
-      .groups-grid {
-        min-width: 700px;
-        gap: 1rem;
-        display: flex;
-        overflow-x: auto;
-      }
-      .group-card {
-        min-height: 180px;
-        padding: 0.8rem;
-        width: 150px; /* Smaller width for mobile optimization */
-        flex-shrink: 0;
-        margin-right: 1rem;
-      }
-      .group-image {
-        height: 70px;
-      }
-      .group-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-      .group-card p { font-size: 0.75rem; }
-      .join-btn { padding: 0.5rem 1.2rem; font-size: 0.8rem; }
-    }
-  </style>
+        /* Join button styles (reused for modal) */
+        .join-btn-modal {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 0.8rem 2.5rem; /* Larger for the modal */
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .join-btn-modal:hover:not(:disabled) {
+            background-color: #1dad53;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+        }
+        .join-btn-modal:disabled {
+            background-color: #cc0000 !important; /* Red for locked */
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #ddd;
+        }
+
+        /* Locked group style (unchanged from original) */
+        .group-card.locked {
+            filter: blur(4px);
+            pointer-events: none; /* Make card unclickable */
+            user-select: none;
+            position: relative;
+        }
+        .group-card.locked::after {
+            content: "🔒 Locked";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #cc0000dd;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 0 8px #cc0000cc;
+            pointer-events: none;
+        }
+
+        /* Disclaimer styles (unchanged) */
+        .disclaimer {
+            background: #222;
+            color: #ffdddd;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 15px rgb(255 0 0 / 0.3);
+        }
+        .disclaimer strong {
+            color: #f44336;
+        }
+
+        /* Advertisement section styles (UPDATED for white block and black border) */
+        .advertisement-section {
+            background: #ffffff; /* White block */
+            border: 2px solid #111; /* Black borders */
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            color: #333;
+        }
+        .advertisement-section h2 {
+            color: #111;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+        }
+        .advertise-btn {
+            background: linear-gradient(45deg, #ff9900, #ffc900);
+            color: #111;
+            padding: 1rem 2.8rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 25px rgba(255, 153, 0, 0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+        .advertise-btn:hover {
+            background: linear-gradient(45deg, #cc7a00, #cca300);
+            box-shadow: 0 10px 30px rgba(255, 153, 0, 0.8);
+            transform: translateY(-1px);
+        }
+
+        /* Request section styles (unchanged) */
+        .request-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            box-shadow: 0 12px 26px rgb(0 0 0 / 0.2);
+        }
+        .request-section h2 {
+            color: #111;
+            margin-bottom: 0.5rem;
+        }
+        .free-text {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .request-btn {
+            background: linear-gradient(45deg, #007749, #001489);
+            color: white;
+            padding: 1rem 2.8rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 25px rgba(0, 116, 73, 0.7);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+        .request-btn:hover {
+            background: linear-gradient(45deg, #005632, #001058);
+            box-shadow: 0 10px 30px rgba(0, 80, 51, 0.9);
+            transform: translateY(-1px);
+        }
+
+        /* Footer styles (unchanged) */
+        footer {
+            text-align: center;
+            padding: 1.8rem 1rem;
+            color: #888;
+            border-top: 1px solid #333;
+            user-select: none;
+        }
+
+        /* Modal Styles (NEW) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e1e1e;
+            color: #eee;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modal-content h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d2d3;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #ccc;
+            margin-bottom: 2rem;
+            /* Allow line breaks for long descriptions */
+            white-space: pre-wrap; 
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #777;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .site-title { font-size: 2rem; }
+            .hero h1 { font-size: 1.6rem; }
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            .scroll-container {
+                max-height: 350px;
+                padding: 0.8rem;
+                /* Keep flex for horizontal scroll */
+            }
+            .groups-grid {
+                min-width: 700px;
+                gap: 1rem;
+                display: flex;
+                overflow-x: auto;
+            }
+            .group-card {
+                min-height: 160px; /* Reduced height for mobile */
+                padding: 0.8rem;
+                width: 150px; /* Smaller width for mobile optimization */
+                flex-shrink: 0;
+                margin-right: 1rem;
+            }
+            .group-image {
+                height: 70px;
+            }
+            .group-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+
+            /* Mobile styles for new button/modal */
+            .detail-btn { 
+                width: 35px; /* Smaller icon on mobile */
+                height: 35px;
+                bottom: 8px; 
+                right: 8px;
+            }
+            .join-btn-modal { padding: 0.7rem 2rem; font-size: 0.9rem; }
+
+            /* Responsive adjustments for the new section (NEW) */
+            .advertisement-section {
+                padding: 1.5rem 1.5rem;
+            }
+            .advertisement-section h2 {
+                font-size: 1.4rem;
+                margin-bottom: 1rem;
+            }
+            .advertise-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+            /* Modal responsive adjustment */
+            .modal-content {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+            .modal-content h3 {
+                font-size: 1.6rem;
+            }
+            .modal-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <header>
-      <h1 class="site-title">GroupsZA</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1 class="site-title">GroupsZA</h1>
+        </header>
 
-    <!-- Hero -->
-    <section class="hero">
-      <h1>Find WhatsApp Group Chats</h1>
-    </section>
+        <section class="hero">
+            <h1>Find WhatsApp Group Chats</h1>
+        </section>
 
-    <!-- Action Buttons -->
-    <section class="action-buttons">
-      <a href="games.html" class="action-btn game-btn" rel="noopener">
-        <i class="fas fa-gamepad" style="font-size: 1.4rem;"></i>
-        Play Games
-      </a>
-      <a href="https://xcmorgan.github.io/Morgan-s_Websites/" class="action-btn explore-btn" target="_blank" rel="noopener">
-        <i class="fas fa-gem" style="font-size: 1.4rem;"></i>
-        Explore Morgan's Websites
-      </a>
-    </section>
+        <section class="action-buttons">
+            <a href="games.html" class="action-btn game-btn" rel="noopener">
+                <i class="fas fa-gamepad" style="font-size: 1.4rem;"></i>
+                Play Games
+            </a>
+            <a href="https://xcmorgan.github.io/Morgan-s_Websites/" class="action-btn explore-btn" target="_blank" rel="noopener">
+                <i class="fas fa-gem" style="font-size: 1.4rem;"></i>
+                Explore Morgan's Websites
+            </a>
+        </section>
 
-    <!-- About -->
-    <section class="about">
-      <h2>About GroupsZA</h2>
-      <p>
-        This is a website where users can find socialising group chats on WhatsApp.
-        Connect with people, make friends, and join active South African communities.
-      </p>
-    </section>
+        <section class="about">
+            <h2>About GroupsZA</h2>
+            <p>
+                This is a website where users can find socialising group chats on WhatsApp.
+                Connect with people, make friends, and join active South African communities.
+            </p>
+        </section>
 
-    <!-- Accordion: Socializing -->
-    <button class="accordion-button" aria-expanded="false" aria-controls="socializing-panel" id="socializing-btn">
-      Socializing <i class="fas fa-chevron-right"></i>
-    </button>
-    <div class="accordion-content" id="socializing-panel" hidden>
-      <div class="scroll-container">
-        <div class="groups-grid">
-          <!-- Only defined groups, smaller and optimized -->
-          <article class="group-card" role="group" aria-labelledby="group1title">
-            <div class="group-image">
-              <img src="justvibes.jpeg" alt="Just Vibes Group Image" />
+        <button class="accordion-button" aria-expanded="false" aria-controls="socializing-panel" id="socializing-btn">
+            Group Chats <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="accordion-content" id="socializing-panel" hidden>
+            <div class="scroll-container">
+                <div class="groups-grid">
+                    <article class="group-card" role="group" data-title="Just Vibes" data-desc="A friendly group for casual chats and good vibes only." data-link="https://chat.whatsapp.com/Kg31RQ75WsKEerd43BGZXg?mode=wwt">
+                        <div class="group-image">
+                            <img src="justvibes.jpeg" alt="Just Vibes Group Image" />
+                        </div>
+                        <h3 id="group1title">Just Vibes</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+
+                    <article class="group-card" role="group" data-title="funziessssss😝😝🩷" data-desc="We qwel on the highest level." data-link="https://chat.whatsapp.com/LFCmJRWvTh0KrDG0R0rOR6?mode=wwt">
+                        <div class="group-image">
+                            <img src="funzies.jpg" alt="funziessssss Group Image" />
+                        </div>
+                        <h3 id="group2title">funziessssss😝😝🩷</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                    
+                                        <article class="group-card" role="group" data-title="🎉" data-desc="No group description." data-link="https://chat.whatsapp.com/C3yOtEj1m4Q71mh33wGSZt?mode=hqrt2">
+                        <div class="group-image">
+                            <img src="minions.jpg" alt="🎊" />
+                        </div>
+                        <h3 id="group2title">🎊</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                    <article class="group-card" role="group" data-title="Lekompo Music Production" data-desc="No Group description" data-link="https://chat.whatsapp.com/KYRLMJlexf6JV182RA89qm?mode=wwt">
+                        <div class="group-image">
+                            <img src="grownupscrew.jpg" alt="grownupscrew" />
+                        </div>
+                        <h3 id="group3title">The grownups Crew</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                                        <article class="group-card" role="group" data-title="Lekompo Music Production" data-desc="This Group Is Mainly For : \n\n- Music Production \n- Exchanging of Samples Packs/ Drum Kits \n- Collaborations \n- Tutorials \n- Tracks Feedback \n\nNB : anything not related to Music Production is not allowed in this group" data-link="https://chat.whatsapp.com/DGXW8rmdd1XEEAuR85s5JL?mode=hqrc">
+                        <div class="group-image">
+                            <img src="fl.jpg" alt="grownupscrew" />
+                        </div>
+                        <h3 id="group3title">Lekompo Music Production</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+
+                    <article class="group-card" role="group" data-title="Squad♦" data-desc="Group opens 15 December 2025. Add your friends and share link♦️" data-link="https://chat.whatsapp.com/E45kctlP7CdFLWygPAyc0X?mode=wwt">
+                        <div class="group-image">
+                            <img src="squad.jpg" alt="Squad Group Image" />
+                        </div>
+                        <h3 id="group4title">Squad♦</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                    <article class="group-card" role="group" data-title="Squad♦" data-desc="Group opens 15 December 2025. Add your friends and share link♦️" data-link="https://chat.whatsapp.com/LvK429hXOvZKspsTNgTZnp?mode=wwt">
+                        <div class="group-image">
+                            <img src="westcrew.jpg" alt="Squad Group Image" />
+                        </div>
+                        <h3 id="group4title">West Crew♥</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                    <article class="group-card locked" role="group" data-title="Locked Group 2" data-desc="This group is locked and currently unavailable. Upgrade soon for access!" data-link="" data-locked="true">
+                        <div class="group-image">
+                            <img src="images/locked.jpg" alt="Locked Group Image" />
+                        </div>
+                        <h3 id="group8title">Locked Group 2</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                    
+                    <article class="group-card locked" role="group" data-title="Locked Group 3" data-desc="This group is locked and currently unavailable. Upgrade soon for access!" data-link="" data-locked="true">
+                        <div class="group-image">
+                            <img src="images/locked.jpg" alt="Locked Group Image" />
+                        </div>
+                        <h3 id="group9title">Locked Group 3</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                </div>
             </div>
-            <h3 id="group1title">Just Vibes</h3>
-            <p>A friendly group for casual chats and good vibes only.</p>
-            <a href="https://chat.whatsapp.com/Kg31RQ75WsKEerd43BGZXg?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
-          </article>
-          <article class="group-card" role="group" aria-labelledby="group2title">
-            <div class="group-image">
-              <img src="funzies.jpg" alt="funziessssss Group Image" />
-            </div>
-            <h3 id="group2title">funziessssss😝😝🩷</h3>
-            <p>We qwel on the highest level.</p>
-            <a href="https://chat.whatsapp.com/LFCmJRWvTh0KrDG0R0rOR6?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
-          </article>
-          <article class="group-card" role="group" aria-labelledby="group3title">
-            <div class="group-image">
-              <img src="squad.jpg" alt="Group 3 Image" />
-            </div>
-            <h3 id="group3title">Squad♦</h3>
-            <p>Group opens 15 December 2025. Add your friends and share link♦️</p>
-            <a href="https://chat.whatsapp.com/E45kctlP7CdFLWygPAyc0X?mode=wwt" target="_blank" rel="noopener" class="join-btn">Join Group</a>
-          </article>
-          <!-- Locked groups -->
-          <article class="group-card locked" role="group" aria-labelledby="group7title">
-            <div class="group-image">
-              <img src="images/locked.jpg" alt="Locked Group Image" />
-            </div>
-            <h3 id="group7title">Locked Group 1</h3>
-            <p>This group is locked and unavailable.</p>
-            <button class="join-btn" disabled>Unavailable</button>
-          </article>
-          <article class="group-card locked" role="group" aria-labelledby="group8title">
-            <div class="group-image">
-              <img src="images/locked.jpg" alt="Locked Group Image" />
-            </div>
-            <h3 id="group8title">Locked Group 2</h3>
-            <p>This group is locked and unavailable.</p>
-            <button class="join-btn" disabled>Unavailable</button>
-          </article>
-          <article class="group-card locked" role="group" aria-labelledby="group9title">
-            <div class="group-image">
-              <img src="images/locked.jpg" alt="Locked Group Image" />
-            </div>
-            <h3 id="group9title">Locked Group 3</h3>
-            <p>This group is locked and unavailable.</p>
-            <button class="join-btn" disabled>Unavailable</button>
-          </article>
         </div>
-      </div>
+
+        <button class="accordion-button" aria-expanded="false" aria-controls="channels-panel" id="channels-btn">
+            WhatsApp Channels <i class="fas fa-lock"></i>
+        </button>
+        <div class="accordion-content" id="channels-panel" hidden>
+            <div class="scroll-container">
+                <div class="groups-grid" id="channels-grid">
+                    <article class="group-card" role="group" data-title="No channels added yet" data-desc="This section is currently empty. Request to add your channel for free!" data-link="" data-locked="true">
+                        <div class="group-image">
+                            <img src="images/channels.jpg" alt="Channels Image" />
+                        </div>
+                        <h3 id="channel1title">No channels added yet</h3>
+                        <button class="detail-btn" onclick="openModal(this)">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        <section class="advertisement-section">
+            <h2>Want to advertise in these channels?</h2>
+            <a href="advertiseatchannels.html" class="advertise-btn">
+                <i class="fas fa-bullhorn"></i> Click here.
+            </a>
+        </section>
+
+        <section class="website-request-section">
+            <h2>Want a Website?</h2>
+            <p class="price-text">
+                **Price: R70.00** | Deposit: R20.00
+            </p>
+            <p class="info-text">
+                Get a simple **static website** to showcase your business, profile, or project. Static sites are great for **landing pages, portfolios, or small business info pages** because they are fast, secure, and easy to maintain.
+            </p>
+            <a href="getawebsite.html" class="request-website-btn">
+                <i class="fas fa-laptop-code"></i> Get a Website Now
+            </a>
+        </section>
+
+        <section class="disclaimer">
+            <h3>⚠️ Important Notice</h3>
+            <p>
+                <strong>Respect all group rules.</strong> GroupsZA is a directory only. I am not responsible for any content, transactions, or activities in these groups. Join at your own risk.
+            </p>
+        </section>
+
+        <section class="request-section">
+            <h2>Want to Add Your Group/Channel?</h2>
+            <p class="free-text">✅ It's FREE!</p>
+            <a href="https://wa.me/27638100407?text=Hi%20GroupsZA%20-%20I%20want%20to%20add%20my%20group" target="_blank" class="request-btn" rel="noopener">
+                <i class="fab fa-whatsapp"></i> Request to Add Group/Channel
+            </a>
+        </section>
+
+        <footer>
+            <p>© 2025 GroupsZA Prince Morgan</p>
+        </footer>
     </div>
 
-    <!-- Unlocked WhatsApp Channels -->
-    <button class="accordion-button" aria-expanded="false" aria-controls="channels-panel" id="channels-btn">
-      WhatsApp Channels <i class="fas fa-lock"></i>
-    </button>
-    <div class="accordion-content" id="channels-panel" hidden>
-      <div class="scroll-container">
-        <div class="groups-grid" id="channels-grid">
-          <article class="group-card" role="group" aria-labelledby="channel1title">
-            <div class="group-image">
-              <img src="images/channels.jpg" alt="Channels Image" />
-            </div>
-            <h3 id="channel1title">No channels added yet</h3>
-            <p>This section is currently empty.</p>
-            <button class="join-btn" disabled>Unavailable</button>
-          </article>
+    <div id="groupDetailModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle">Group Name</h3>
+            <p id="modalDescription">Group Description goes here.</p>
+            <a id="modalJoinBtn" href="#" target="_blank" rel="noopener" class="join-btn-modal">Join Group</a>
         </div>
-      </div>
     </div>
 
-    <!-- Disclaimer -->
-    <section class="disclaimer">
-      <h3>⚠️ Important Notice</h3>
-      <p>
-        <strong>Respect all group rules.</strong> GroupsZA is a directory only. I am not responsible for any content, transactions, or activities in these groups. Join at your own risk.
-      </p>
-    </section>
+    <script>
+        // --- Modal Functions ---
+        const modal = document.getElementById('groupDetailModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalJoinBtn = document.getElementById('modalJoinBtn');
 
-    <!-- Request Group -->
-    <section class="request-section">
-      <h2>Want to Add Your Group/Channel?</h2>
-      <p class="free-text">✅ It's FREE!</p>
-      <a href="https://wa.me/638100407?text=Hi%20GroupsZA%20-%20I%20want%20to%20add%20my%20group" target="_blank" class="request-btn" rel="noopener">
-        <i class="fab fa-whatsapp"></i> Request to Add Group/Channel
-      </a>
-    </section>
+        function openModal(buttonElement) {
+            // Get the parent card element (article)
+            const card = buttonElement.closest('.group-card');
+            
+            // Extract data from the card's data attributes
+            const title = card.getAttribute('data-title');
+            const description = card.getAttribute('data-desc');
+            const link = card.getAttribute('data-link');
+            // Check for the presence of the data-locked attribute
+            const isLocked = card.hasAttribute('data-locked') && card.getAttribute('data-locked') === 'true';
 
-    <!-- Footer -->
-    <footer>
-      <p>© 2025 GroupsZA Prince Morgan</p>
-    </footer>
-  </div>
+            // Populate modal content
+            modalTitle.textContent = title;
+            // Use innerHTML and replace \n with <br> to handle line breaks in data-desc
+            modalDescription.innerHTML = description.replace(/\n/g, '<br>');
+            modalJoinBtn.href = link || '#'; // Use '#' if link is empty
 
-  <script>
-    // Toggle accordions
-    document.querySelectorAll('.accordion-button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!isExpanded));
-        const contentId = btn.getAttribute('aria-controls');
-        const content = document.getElementById(contentId);
-        if (content) {
-          if (isExpanded) {
-            content.style.display = 'none';
-          } else {
-            // For channels, reset content to default if opening
-            if (contentId === 'channels-panel') {
-              document.getElementById('channels-grid').innerHTML = `
-                <article class="group-card" role="group" aria-labelledby="channel1title">
-                  <div class="group-image">
-                    <img src="images/channels.jpg" alt="Channels Image" />
-                  </div>
-                  <h3 id="channel1title">No channels added yet</h3>
-                  <p>This section is currently empty.</p>
-                  <button class="join-btn" disabled>Unavailable</button>
-                </article>`;
+            // Handle locked/unlocked state
+            if (isLocked) {
+                modalJoinBtn.textContent = 'Locked - Cannot Join';
+                modalJoinBtn.disabled = true;
+                modalJoinBtn.removeAttribute('target');
+                modalJoinBtn.style.pointerEvents = 'none'; // Prevent click even if link is present
+            } else {
+                modalJoinBtn.textContent = 'Join Group';
+                modalJoinBtn.disabled = false;
+                modalJoinBtn.setAttribute('target', '_blank');
+                modalJoinBtn.style.pointerEvents = 'auto';
             }
-            content.style.display = 'block';
-          }
-        }
-        btn.classList.toggle('active');
-      });
-    });
-    // Initialize channels as closed
-    document.getElementById('channels-btn').setAttribute('aria-expanded', 'false');
-    document.getElementById('channels-panel').style.display = 'none';
 
-    // Optional: toggle display on button click for socializing
-    // (Already handled in the above code)
-  </script>
+            // Display the modal
+            modal.style.display = 'flex';
+        }
+
+        function closeModal(event) {
+            // Check if the click was on the overlay itself or the close button
+            if (event && event.target !== modal && !event.target.classList.contains('modal-close-btn')) {
+                // If the click was inside the modal content, do nothing
+                if (event.target.closest('.modal-content')) return;
+            }
+            modal.style.display = 'none';
+        }
+
+        // --- Accordion Functions ---
+        document.querySelectorAll('.accordion-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+                
+                // Close all other open accordions
+                document.querySelectorAll('.accordion-button.active').forEach(otherBtn => {
+                    if (otherBtn !== btn) {
+                        otherBtn.classList.remove('active');
+                        otherBtn.setAttribute('aria-expanded', 'false');
+                        // Hide content
+                        document.getElementById(otherBtn.getAttribute('aria-controls')).style.display = 'none';
+                    }
+                });
+
+                // Toggle the clicked accordion
+                const contentId = btn.getAttribute('aria-controls');
+                const content = document.getElementById(contentId);
+                
+                if (content) {
+                    if (isExpanded) {
+                        content.style.display = 'none';
+                        btn.classList.remove('active');
+                    } else {
+                        content.style.display = 'block';
+                        btn.classList.add('active');
+                    }
+                }
+                btn.setAttribute('aria-expanded', String(!isExpanded));
+            });
+        });
+        // Ensure initial state is closed
+        document.getElementById('socializing-btn').setAttribute('aria-expanded', 'false');
+        document.getElementById('socializing-panel').style.display = 'none';
+        document.getElementById('channels-btn').setAttribute('aria-expanded', 'false');
+        document.getElementById('channels-panel').style.display = 'none';
+    </script>
 </body>
 </html>
