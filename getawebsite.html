@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get a Static HTML Website</title>
+    <style>
+        body {
+            transition: background-color 2s ease-in-out; /* Smooth transition */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px 20px 80px 20px; /* Added padding for the fixed footer */
+            text-align: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            position: relative; /* For footer positioning */
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 50px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .price {
+            font-size: 2em;
+            color: #28a745;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f0ad4e; /* A contrasting color for navigation */
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #ec971f;
+        }
+        .disclaimer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        ul {
+            list-style-type: none; 
+            padding: 0;
+            text-align: left;
+            display: inline-block;
+        }
+        li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        /* Footer Style */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="home-button">
+            🏠 Home
+        </a>
+        
+        <h1>Static HTML Websites by [Your Name/Company Name]</h1>
+
+        <p>I create highly efficient, lightweight, and **static HTML websites** tailored to your needs. Get a professional online presence quickly and affordably!</p>
+
+        <hr>
+
+        <h2>What is a Static Website?</h2>
+        <p>A **static website** is like a printed brochure or a sign board online. The content is **fixed** and looks exactly the same for every visitor, every time. It’s perfect for sites that don't need user accounts, shopping carts, or daily news updates.</p>
+        <p>I build these sites using simple, reliable code (HTML, CSS), making them easy to maintain and incredibly fast to load.</p>
+
+        <h3>Everyday Benefits of Static Websites:</h3>
+        <ul>
+            <li>📌 **Blazing Fast Loading:** Visitors don't have to wait. Fast websites mean happy customers and better search engine ranking.</li>
+            <li>📌 **Super Secure:** Because there are no complex databases to hack, your website is much safer from online threats.</li>
+            <li>📌 **Cheap to Host:** You save money! These sites require minimal server power, leading to very low hosting fees.</li>
+            <li>📌 **Reliable and Stable:** They almost never crash. Your website will be available 24/7 without common technical errors.</li>
+        </ul>
+
+        <hr>
+
+        <h2>Pricing and Delivery</h2>
+        <div class="price">
+            Total Website Price: **R70**
+        </div>
+        <p>To start work, a **R20 deposit** is required. The remaining R50 is due upon delivery.</p>
+        <p>Website delivery is typically within **2 to 3 days** after receiving the deposit and all necessary content (text, images, etc.) from you.</p>
+
+        <a href="https://wa.me/27638100407" class="button-link" target="_blank">
+            Talk to me. 0638100407
+        </a>
+
+        <div class="disclaimer">
+            <h3>Disclaimer:</h3>
+            <p>I create the website code and files, ready for hosting. **I do not create or register domain names** (e.g., yourname.com). You will need to purchase a domain and hosting separately.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 Prince Morgan
+    </div>
+
+    <script>
+        const colors = ['#f8c5c5', '#c5f8e0', '#c5e0f8', '#f8f1c5', '#eac5f8', '#c5cff8']; // Array of nice pastel colors
+        let colorIndex = 0;
+
+        function changeBackgroundColor() {
+            document.body.style.backgroundColor = colors[colorIndex];
+            colorIndex = (colorIndex + 1) % colors.length; // Cycle through the array
+        }
+
+        // Run the function immediately on load
+        changeBackgroundColor();
+
+        // Run the function every 30 seconds (30000 milliseconds)
+        setInterval(changeBackgroundColor, 30000);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertise on GroupsZA Channels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* Custom styles for a dark, modern look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background */
+            color: #c9d1d9;
+        }
+        .channel-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #161b22; /* Slightly lighter dark background for card */
+        }
+        .channel-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .view-btn {
+            background-color: #25d366; /* WhatsApp green */
+        }
+        .advertise-btn {
+            background-color: #0077b6; /* Professional blue */
+        }
+        /* Specific styling for the legal block */
+        .legal-section ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            padding-left: 0.5rem;
+        }
+        /* New style for the Empty State Card */
+        .empty-channel-card {
+            background-color: #2a0909; /* Reddish dark background for emphasis */
+            border: 2px solid #ef4444;
+            text-align: center;
+        }
+        .empty-channel-card:hover {
+            transform: none;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="container mx-auto p-4 sm:p-8">
+
+        <header class="text-center py-10 border-b border-gray-700 mb-12">
+            <a href="index.html" class="text-blue-400 hover:text-blue-300 transition duration-150 text-sm font-semibold flex items-center justify-center mb-4">
+                <i class="fas fa-chevron-left mr-2"></i> Back to Main Site
+            </a>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-3">
+                Advertise on Our WhatsApp Channels
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                Reach thousands of South African users directly. Select the channel that best suits your audience.
+            </p>
+        </header>
+
+        <section class="grid grid-cols-1 gap-8 mb-16">
+            <script>
+                // IMPORTANT: The channels array is currently empty
+                const channels = []; 
+
+                const container = document.currentScript.parentNode;
+                const userWhatsappNumber = "0638100407"; // Your number
+
+                // Text for the new "Add Your Channel" button
+                const addChannelText = encodeURIComponent("Hi GroupsZA, I want to add my WhatsApp Channel for FREE.");
+                const addChannelLink = `https://wa.me/27${userWhatsappNumber.substring(1)}?text=${addChannelText}`;
+
+
+                if (channels.length === 0) {
+                    // Render the "No Channels Added Yet" state with the new button
+                    const emptyCard = document.createElement('article');
+                    emptyCard.className = 'empty-channel-card p-10 rounded-xl shadow-lg flex flex-col items-center max-w-lg mx-auto';
+                    emptyCard.innerHTML = `
+                        <div class="text-6xl text-red-500 mb-4">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-white mb-3">No Channels Added Yet</h2>
+                        <p class="text-lg text-red-300 mb-6">
+                            Our premium advertising channels are currently being set up. You can be one of the first to be listed!
+                        </p>
+                        <a href="${addChannelLink}" target="_blank" rel="noopener" class="inline-flex items-center bg-green-500 text-white font-extrabold py-3 px-8 rounded-full text-lg shadow-xl hover:bg-green-600 transition duration-150">
+                            <i class="fab fa-whatsapp mr-3 text-xl"></i> Add Your Channel for FREE
+                        </a>
+                    `;
+                    container.appendChild(emptyCard);
+                } else {
+                    // Original rendering logic (preserved in case channels are added later)
+                    channels.forEach(channel => {
+                        // Create the base card element
+                        const card = document.createElement('article');
+                        card.className = 'channel-card p-6 rounded-xl shadow-lg border border-gray-800 flex flex-col justify-between';
+                        
+                        // Construct the "Advertise Here" URL
+                        const advertiseText = encodeURIComponent(`Hi GroupsZA, I am interested in advertising on the "${channel.name}" channel for one week (R ${channel.price}). Please send me the next steps.`);
+                        const advertiseLink = `https://wa.me/27${userWhatsappNumber.substring(1)}?text=${advertiseText}`;
+
+                        // Populate card inner HTML
+                        card.innerHTML = `
+                            <div class="mb-4 flex items-center">
+                                <div class="p-3 rounded-full ${channel.color} mr-4 text-white text-2xl">
+                                    <i class="${channel.icon}"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white">${channel.name}</h2>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3 mb-6">
+                                <p class="text-sm text-gray-400 italic">${channel.description}</p>
+                                <div class="flex justify-between items-center bg-gray-800/50 p-3 rounded-lg">
+                                    <span class="font-semibold text-gray-300 flex items-center"><i class="fas fa-users mr-2 text-blue-400"></i> Approximate Followers:</span>
+                                    <span class="text-lg font-bold text-white">${channel.followers}</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-gray-800/50 p-3 rounded-lg border-l-4 border-yellow-500">
+                                    <span class="font-semibold text-gray-300 flex items-center"><i class="fas fa-tags mr-2 text-yellow-500"></i> Price (1 Week):</span>
+                                    <span class="text-xl font-extrabold text-yellow-400">${channel.price} ZAR</span>
+                                </div>
+                            </div>
+
+                            <div class="flex space-x-4 mt-auto">
+                                <a href="${channel.link}" target="_blank" rel="noopener" class="view-btn flex-1 py-3 px-4 rounded-full text-center font-bold text-white hover:bg-green-600 transition duration-150">
+                                    <i class="fab fa-whatsapp mr-2"></i> View Channel
+                                </a>
+                                <a href="${advertiseLink}" target="_blank" rel="noopener" class="advertise-btn flex-1 py-3 px-4 rounded-full text-center font-bold text-white hover:bg-blue-700 transition duration-150">
+                                    <i class="fas fa-bullhorn mr-2"></i> Advertise Here
+                                </a>
+                            </div>
+                        `;
+
+                        container.appendChild(card);
+                    });
+                }
+            </script>
+        </section>
+
+        <section class="legal-section bg-gray-900 p-6 sm:p-8 rounded-xl border border-red-500/50 mb-12">
+            <h2 class="text-2xl font-bold text-red-400 mb-4 flex items-center"><i class="fas fa-gavel mr-3"></i> Legal Disclaimer & Advertising Terms</h2>
+            <p class="text-gray-400 mb-4">By engaging with GroupsZA for advertising, you agree to the following terms:</p>
+            <ul class="text-gray-400 space-y-3">
+                <li>
+                    <strong>Non-Affiliation:</strong> GroupsZA is an independent directory service and is NOT affiliated with, endorsed by, or officially connected to WhatsApp, Meta, or any of their subsidiaries. All trademarks belong to their respective owners.
+                </li>
+                <li>
+                    <strong>Content Responsibility:</strong> The Advertiser (you) is solely responsible for the content of the advertisement. GroupsZA reserves the right, at our sole discretion, to reject, remove, or modify any advertisement that we deem inappropriate, misleading, illegal, defamatory, or harmful, without refund.
+                </li>
+                <li>
+                    <strong>Follower Counts:</strong> The follower numbers displayed are <strong>approximate estimates</strong> and are subject to change without notice due to natural audience fluctuation. We do not guarantee specific reach or engagement rates.
+                </li>
+                <li>
+                    <strong>Liability Limitation:</strong> GroupsZA shall not be liable for any loss, damage, or claims arising from the use of the advertised channels or the content of the advertisements placed.
+                </li>
+                <li>
+                    <strong>Pricing:</strong> All prices are listed in South African Rand (ZAR) and are valid for one week of continuous placement unless otherwise agreed upon. Pricing is subject to change at any time.
+                </li>
+            </ul>
+        </section>
+
+        <section class="text-center bg-gray-800 p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bold text-white mb-4">Ready to Boost Your Reach?</h2>
+            <p class="text-lg text-gray-400 mb-6">
+                Click the "Advertise Here" button on your preferred channel, or contact us directly for bulk deals.
+                For security and flexibility, payments are done directly inbox.
+            </p>
+            <a href="https://wa.me/27638100407?text=GroupsZA%20-%20I%20am%20interested%20in%20bulk%20advertising%20across%20multiple%20channels." target="_blank" rel="noopener" class="inline-flex items-center bg-yellow-500 text-gray-900 font-extrabold py-3 px-8 rounded-full text-lg shadow-xl hover:bg-yellow-400 transition duration-150">
+                <i class="fab fa-whatsapp mr-3 text-xl"></i> General Advertising Inquiry
+            </a>
+            <p class="text-sm text-gray-500 mt-4">Contact Number: 0638100407</p>
+        </section>
+
+    </div>
+    
+    <footer class="text-center py-6 mt-8 border-t border-gray-700">
+        <p class="text-sm text-gray-500">© 2025 Prince Morgan</p>
+    </footer>
+
+</body>
+</html>
